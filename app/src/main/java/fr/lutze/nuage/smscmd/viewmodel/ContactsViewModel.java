@@ -5,13 +5,9 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-import androidx.loader.content.AsyncTaskLoader;
 import androidx.room.Room;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.lutze.nuage.smscmd.model.SMSCmdDatabase;
@@ -21,6 +17,7 @@ public class ContactsViewModel extends AndroidViewModel {
 
     private SMSCmdDatabase db;
     private LiveData<List<Contact>> ldContacts;
+    private static ContactsViewModel contactsViewModel;
 
     public ContactsViewModel(@NonNull Application application) {
         super(application);
@@ -34,6 +31,16 @@ public class ContactsViewModel extends AndroidViewModel {
         });
     }
 
+    public static ContactsViewModel getInstance(Application application) {
+        if (contactsViewModel == null) {
+            contactsViewModel = new ContactsViewModel(application);
+        }
+        return contactsViewModel;
+    }
+
+    public ContactViewModel getContactViewModel(int contactUid) {
+        return new ContactViewModel(db,contactUid);
+    }
 
     public LiveData<List<Contact>> getLdContacts() {
         return ldContacts;

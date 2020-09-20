@@ -27,7 +27,6 @@ import fr.lutze.nuage.smscmd.viewmodel.ContactsViewModel;
 public class MainActivity extends AppCompatActivity {
 
     private ContactsViewModel contactsViewModel;
-    private ContactAdapter contactAdapter;
 
     private int PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
@@ -56,14 +55,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //update list
-        RecyclerView rv = findViewById(R.id.contacts_recyclerview);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        contactAdapter = new ContactAdapter();
-        rv.setAdapter(contactAdapter);
-        contactsViewModel.getLdContacts().observe(this, contactList -> {
-            contactAdapter.update(contactList);
-        });
     }
 
     @Override

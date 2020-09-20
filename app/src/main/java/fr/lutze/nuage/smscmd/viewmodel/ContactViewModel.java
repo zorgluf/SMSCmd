@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import fr.lutze.nuage.smscmd.model.SMSCmdDatabase;
 import fr.lutze.nuage.smscmd.model.entity.Contact;
 
 public class ContactViewModel extends ViewModel {
@@ -18,11 +19,26 @@ public class ContactViewModel extends ViewModel {
         ldPhoneNumber.postValue(contact.phone);
     }
 
+    public ContactViewModel(SMSCmdDatabase db, int contactUid) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                contact = db.contactDao().findById(contactUid);
+                ldName.postValue(contact.cn);
+                ldPhoneNumber.postValue(contact.phone);
+            }
+        }).start();
+    }
+
     public LiveData<String> getLdName() {
         return ldName;
     }
 
     public LiveData<String> getLdPhoneNumber() {
         return ldPhoneNumber;
+    }
+
+    public Contact getContact() {
+        return contact;
     }
 }

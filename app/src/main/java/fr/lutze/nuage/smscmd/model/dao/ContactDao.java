@@ -16,7 +16,10 @@ public interface ContactDao {
     LiveData<List<Contact>> getAll();
 
     @Query("SELECT * FROM contact WHERE uid LIKE :uid LIMIT 1")
-    LiveData<Contact> findById(int uid);
+    LiveData<Contact> findLdById(int uid);
+
+    @Query("SELECT * FROM contact WHERE uid LIKE :uid LIMIT 1")
+    Contact findById(int uid);
 
     @Insert
     void insertAll(Contact... contacts);
